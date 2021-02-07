@@ -19,5 +19,6 @@ Options:
 
 Commands:
   dice  Calculates Dice coefficient for given WORDs
+  hmm   Creates Markov model for given data
   lev   Calculates Levenshtein distance between first and second WORDs
 ```

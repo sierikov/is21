@@ -46,7 +46,7 @@ def dice(words, trigrams):
 @click.option('--transitions/--no-tran', '-t', default=False, type=bool, help='Show founded transitions')
 @click.option('--emissions/--no-emis', '-e', default=False, type=bool, help='Show founded emission')
 @click.option('--data/--no-data', '-d', default=False, type=bool, help='Show input data')
-@click.option('--sentence', '-s', default=False, type=str, help='Detects labels in given string')
+@click.option('--sentence', '-s', default="", type=str, help='Detects labels in given string')
 def hmm(file, transitions, emissions, data, sentence):
     """Creates Markov model for given data"""
     art.print_hmm()

@@ -27,8 +27,8 @@ def show_emission(emission):
 
 
 def show(name: str, data):
-    print("\n- %s:" % name)
-    sorted_data = sorted(data.items(), key=lambda x: x[0])
+    print("- %s:" % name)
+    sorted_data = sorted(data.items(), key=lambda x: x[1], reverse=True)
     for ((s, o), v) in sorted_data:
         print("%s -> %s: %0.2f" % (s, o, v))
 
@@ -99,7 +99,7 @@ def read_training(fn, show_data):
     t = Prob()
     e = Prob()
     if show_data:
-        print("\n- HMM is trained on the following data:")
+        print("- HMM is trained on the following data:")
     for line in open(fn):
         if show_data:
             print(line.strip())

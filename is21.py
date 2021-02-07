@@ -1,7 +1,8 @@
 import click
-from levenshtein import calc_distance
-from dice import calc_dice
-import art
+from modules.levenshtein import calc_distance
+from modules.dice import calc_dice
+from modules.markov import calc_hmm, detect_words
+import modules.art as art
 
 
 def get_words(initial):
@@ -26,7 +27,6 @@ def lev(words, table):
     """Calculates Levenshtein distance between first and second WORDs """
     art.print_lev()
     (first, second) = get_words(words)
-    click.echo('Calculating Levenshtein distance')
     calc_distance(first, second, table)
 
 
@@ -39,6 +39,19 @@ def dice(words, trigrams):
     art.print_dice()
     (first, second) = get_words(words)
     calc_dice(first, second, trigrams)
+
+
+@cli.command()
+@click.option('--file', '-f', required=True, type=str, help='Define typed data file location')
+@click.option('--transitions/--no-tran', '-t', default=False, type=bool, help='Show founded transitions')
+@click.option('--emissions/--no-emis', '-e', default=False, type=bool, help='Show founded emission')
+@click.option('--data/--no-data', '-d', default=False, type=bool, help='Show input data')
+@click.option('--sentence', '-s', default=False, type=str, help='Detects labels in given string')
+def hmm(file, transitions, emissions, data, sentence):
+    """Creates Markov model for given data"""
+    art.print_hmm()
+    calc_hmm(file, transitions, emissions, data, sentence)
+
 
 
 if __name__ == '__main__':

@@ -3,8 +3,8 @@ def calc_dice(first: str, second: str, show: bool):
     second_trigrams = calc_trigrams(second)
     if show:
         print('Amount of trigrams:')
-        print('- %s -> %f' % (first, len(first_trigrams)))
-        print('- %s -> %f' % (second, len(second_trigrams)))
+        print('- %s -> %d' % (first, len(first_trigrams)))
+        print('- %s -> %d' % (second, len(second_trigrams)))
     dice: float = 2 * len(first_trigrams & second_trigrams) / (len(first_trigrams) + len(second_trigrams))
     print('Dice coefficient is %f' % dice)
     return dice

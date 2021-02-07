@@ -3,13 +3,23 @@ def print_lev():
 ┬   ┌─┐ ┬  ┬
 │   ├┤  └┐┌┘
 ┴─┘ └─┘  └┘ 
- distance
+distance
     """)
+
 
 def print_dice():
     print("""
 ┌┬┐ ┬ ┌─┐ ┌─┐
  ││ │ │   ├┤ 
 ─┴┘ ┴ └─┘ └─┘
- trigrams
+trigrams
+    """)
+
+
+def print_hmm():
+    print("""
+┬ ┬ ┌┬┐ ┌┬┐
+├─┤ │││ │││
+┴ ┴ ┴ ┴ ┴ ┴
+markov
     """)

@@ -1,4 +1,5 @@
 # IS - 21
+![IS 21 poster](./public/poster.png)
 
 Pack of Python cli tools.
 

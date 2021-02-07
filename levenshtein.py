@@ -1,4 +1,4 @@
-def distance(first: str, second: str, table: bool = False):
+def calc_distance(first: str, second: str, table: bool = False):
     row: int = len(first)
     col: int = len(second)
     d: dict = {}

@@ -5,3 +5,11 @@ def print_lev():
 ┴─┘ └─┘  └┘ 
  distance
     """)
+
+def print_dice():
+    print("""
+┌┬┐ ┬ ┌─┐ ┌─┐
+ ││ │ │   ├┤ 
+─┴┘ ┴ └─┘ └─┘
+ trigrams
+    """)

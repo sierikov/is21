@@ -1,6 +1,16 @@
 import click
-from levenshtein import distance
+from levenshtein import calc_distance
+from dice import calc_dice
 import art
+
+
+def get_words(initial):
+    if all(initial):
+        (first, second) = initial
+    else:
+        first: str = click.prompt('Enter first word', type=str)
+        second: str = click.prompt('Enter second word', type=str)
+    return first, second
 
 
 @click.group()
@@ -9,29 +19,26 @@ def cli():
 
 
 @cli.command()
-@click.option('--words', '-w', type=click.Tuple([str, str]), default=[None, None], help='Defines two words to calculate')
+@click.option('--words', '-w', type=click.Tuple([str, str]), default=[None, None],
+              help='Defines two words to calculate')
 @click.option('--table/--no-table', '-t', default=False, help='Show full table of values', )
 def lev(words, table):
     """Calculates Levenshtein distance between first and second WORDs """
     art.print_lev()
-    if all(words):
-        (first, second) = words
-    else:
-        first: str = click.prompt('Enter first word', type=str)
-        second: str = click.prompt('Enter second word', type=str)
-        table: bool = click.confirm('Display table?')
+    (first, second) = get_words(words)
     click.echo('Calculating Levenshtein distance')
-    distance(first, second, table)
+    calc_distance(first, second, table)
 
 
 @cli.command()
-@click.option('--count', default=1, help='Number of greetings.')
-@click.option('--name', prompt='Your name',
-              help='The person to greet.')
-def hello2(count, name):
-    """Simple program that greets NAME for a total of COUNT times."""
-    for x in range(count):
-        click.echo('Hello %s!' % name)
+@click.option('--words', '-w', type=click.Tuple([str, str]), default=[None, None],
+              help='Defines two words to calculate')
+@click.option('--trigrams/--no-trigrams', '-t', default=False, help='Show trigrams for each word', )
+def dice(words, trigrams):
+    """Calculates Dice coefficient for given WORDs"""
+    art.print_dice()
+    (first, second) = get_words(words)
+    calc_dice(first, second, trigrams)
 
 
 if __name__ == '__main__':

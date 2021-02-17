@@ -1,13 +1,13 @@
 import click
 from modules.levenshtein import calc_distance
 from modules.dice import calc_dice
-from modules.markov import calc_hmm, detect_words
+from modules.markov import calc_hmm
 import modules.art as art
 
 
 def get_words(initial):
     if all(initial):
-        (first, second) = initial
+        return initial
     else:
         first: str = click.prompt('Enter first word', type=str)
         second: str = click.prompt('Enter second word', type=str)
@@ -20,18 +20,18 @@ def cli():
 
 
 @cli.command()
-@click.option('--words', '-w', type=click.Tuple([str, str]), default=[None, None],
-              help='Defines two words to calculate')
-@click.option('--table/--no-table', '-t', default=False, help='Show full table of values', )
-def lev(words, table):
+@click.option('--words', '-w', multiple=True, required=True,
+              help='Defines words to calculate distance')
+@click.option('--verbose', '-v', count=True, help='Defines log level of output')
+def lev(words, verbose):
     """Calculates Levenshtein distance between first and second WORDs """
     art.print_lev()
-    (first, second) = get_words(words)
-    calc_distance(first, second, table)
+    words = get_words(words)
+    calc_distance(words, verbose)
 
 
 @cli.command()
-@click.option('--words', '-w', type=click.Tuple([str, str]), default=[None, None],
+@click.option('--words', '-w', type=click.Tuple([str, str]), required=True,
               help='Defines two words to calculate')
 @click.option('--trigrams/--no-trigrams', '-t', default=False, help='Show trigrams for each word', )
 def dice(words, trigrams):
@@ -51,7 +51,6 @@ def hmm(file, transitions, emissions, data, sentence):
     """Creates Markov model for given data"""
     art.print_hmm()
     calc_hmm(file, transitions, emissions, data, sentence)
-
 
 
 if __name__ == '__main__':

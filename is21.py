@@ -1,4 +1,5 @@
 import click
+from modules.arg import calc_arg
 from modules.lev import calc_lev
 from modules.dice import calc_dice
 from modules.markov import calc_hmm
@@ -54,6 +55,23 @@ def hmm(file, transitions, emissions, data, sentence, start, end):
     """Creates Markov model for given data"""
     art.print_hmm()
     calc_hmm(file, transitions, emissions, data, sentence, start, end)
+
+
+@cli.command()
+@click.option('--file', '-f', required=True, type=str, help='Define typed data file location')
+@click.option('--data/--no-sd', '-sd', default=False, type=bool, help='Show input data')
+@click.option('--rebut/--no-r', '-re', default=False, type=bool, help='Show all rebuts')
+@click.option('--attack/--no-a', '-at', default=False, type=bool, help='Show all attacks')
+@click.option('--defeat/--no-d', '-de', default=False, type=bool, help='Show all defeats')
+@click.option('--undercut/--no-u', '-un', default=False, type=bool, help='Show all undercuts')
+@click.option('--s-attack/--no-sa', '-sa', default=False, type=bool, help='Show all strong attacks')
+@click.option('--s-undercut/--no-su', '-su', default=False, type=bool, help='Show all strong undercuts')
+@click.option('--all/--some', '-a', default=False, type=bool, help='Show all types that can be found')
+def arg(file, data, rebut, attack, defeat, undercut, s_attack, s_undercut, all):
+
+    """Creates Markov model for given data"""
+    art.print_arg()
+    calc_arg(file, data, rebut, attack, defeat, undercut, s_attack, s_undercut, all)
 
 
 if __name__ == '__main__':

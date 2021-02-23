@@ -1,0 +1,6 @@
+p<-not q.
+-q<-not r.
+s<-.
+q<-not p.
+r<-not s.
+-s<-not s.

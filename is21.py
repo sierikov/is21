@@ -1,5 +1,5 @@
 import click
-from modules.levenshtein import calc_distance
+from modules.lev import calc_lev
 from modules.dice import calc_dice
 from modules.markov import calc_hmm
 import modules.art as art
@@ -20,14 +20,14 @@ def cli():
 
 
 @cli.command()
-@click.option('--words', '-w', multiple=True, required=True,
-              help='Defines words to calculate distance')
+@click.option('--words', '-w', multiple=True, required=True, help='Defines words to calculate distance')
+@click.option('--optimum/--greedy', '-o', default=False, type=bool, help='Will use A* to optimize search')
 @click.option('--verbose', '-v', count=True, help='Defines log level of output')
-def lev(words, verbose):
+def lev(words, optimum, verbose):
     """Calculates Levenshtein distance between first and second WORDs """
     art.print_lev()
     words = get_words(words)
-    calc_distance(words, verbose)
+    calc_lev(words, optimum, verbose)
 
 
 @cli.command()

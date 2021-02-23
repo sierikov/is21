@@ -47,10 +47,13 @@ def dice(words, trigrams):
 @click.option('--emissions/--no-emis', '-e', default=False, type=bool, help='Show founded emission')
 @click.option('--data/--no-data', '-d', default=False, type=bool, help='Show input data')
 @click.option('--sentence', '-s', default="", type=str, help='Detects labels in given string')
-def hmm(file, transitions, emissions, data, sentence):
+@click.option('--start', default="$", type=str, help="Indicates the start of the sentence")
+@click.option('--end', default="#", type=str, help="Indicetes the end of the sentence")
+def hmm(file, transitions, emissions, data, sentence, start, end):
+
     """Creates Markov model for given data"""
     art.print_hmm()
-    calc_hmm(file, transitions, emissions, data, sentence)
+    calc_hmm(file, transitions, emissions, data, sentence, start, end)
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 from tabulate import tabulate
 
 
-def calc_hmm(file_path: str, show_transitions: bool, show_emissions: bool, show_data: bool, sentence: str):
+def calc_hmm(file_path: str, show_transitions: bool, show_emissions: bool, show_data: bool, sentence: str, start: str, end: str):
     (transition, emission) = read_training(file_path, show_data)
 
     if show_transitions:
@@ -11,11 +11,11 @@ def calc_hmm(file_path: str, show_transitions: bool, show_emissions: bool, show_
         show_emission(emission)
 
     if sentence != "":
-        detect_words(sentence, transition, emission)
+        detect_words(sentence, transition, emission, start, end)
 
 
-def detect_words(sentence: str, transition, emission):
-    viterbi_alg("$ " + sentence + " #", transition, emission)
+def detect_words(sentence: str, transition, emission, start, end):
+    viterbi_alg(start + " " + sentence + " " + end, transition, emission)
 
 
 def show_transition(transition):

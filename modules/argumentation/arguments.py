@@ -9,9 +9,13 @@ class Arguments:
         self.rules = self.read(fn)
         self.s = self.str(self.rules)
 
-    def str(self, rules2):
+    def str(self, rules2, fallback=False):
         """Returns tabulate of all rules in rules2."""
-        return tabulate([r.str() for r in rules2])
+        rules = [r.str() for r in rules2]
+        if fallback and not len(rules):
+            return "-- \nNo rule matches.\n--"
+
+        return tabulate(rules)
 
     def str2(self, rules2):
         """Returns a string with all the heads of the rules in rules2."""

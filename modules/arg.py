@@ -49,7 +49,8 @@ def calc_arg(file_path: str,
             # Compute the justified arguments
             just = args.justified(x, y)
             # And print them nicely
-            print("\n\nJustified arguments for x=%s and y=%s:\n%s\n" % (x.__name__, y.__name__, args.str(just)))
+            str_rule = (x.__name__, y.__name__, args.str(just, fallback=True))
+            print("\n\nJustified arguments for x=%s and y=%s:\n%s\n" % str_rule)
             all.append([i, x.__name__, y.__name__, ", ".join(map(lambda x: x.head.s, just))])
 
 

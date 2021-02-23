@@ -32,20 +32,22 @@ def add(a, aas):
     return a2
 
 
-def print_matrix(a, b, d, m, n):
+def print_matrix(word_1, word_2, score_dic):
     matrix = []
-    for s in b:
-        matrix.append([""] * len(a) + [""] + list(s))
-    for i in range(m + 1):
+    word_1_length = len(word_1[0])
+    word_2_length = len(word_2[0])
+    for s in word_2:
+        matrix.append([""] * len(word_1) + [""] + list(s))
+    for i in range(word_1_length + 1):
         row = []
         if i == 0:
-            row += [""] * len(a)
+            row += [""] * len(word_1)
         else:
-            row += get(a, i - 1)
-        for j in range(n + 1):
-            row.append(d[(i, j)])
+            row += get(word_1, i - 1)
+        for j in range(word_2_length + 1):
+            row.append(score_dic[(i, j)])
         matrix.append(row)
-    print("\nAlignment of " + ", ".join(a) + " with " + ", ".join(b))
+    print("\nAlignment of " + ", ".join(word_1) + " with " + ", ".join(word_2))
     print(tabulate(matrix))
 
 
@@ -54,13 +56,13 @@ def gap(a):
     return ["-"] * len(a)
 
 
-def cmp(a, b):
+def cmp(word_1, word_2):
     """Returns the score for comparing a and b, which may be characters or the gap symbol.
     cmp defines the scoring scheme for the string distance."""
-    if a == "-" or b == "-":
+    if word_1 == "-" or word_2 == "-":
         return 1
     else:
-        return int(a != b)
+        return int(word_1 != word_2)
 
 
 def sum_of_pairs(aa, bb):
@@ -79,76 +81,66 @@ class Levenshtein:
         self.words = words
         self.verbose = verbose + 1
 
-    def align(self, a, b, d_dir, i, j):
+    def align(self, word_1, word_2, d_dir, i, j):
         """Outputs the alignment of alignments a and b up to position i and j given the direction matrix d_dir.
         Alignments a and b are lists of strings with the original character sequences possibly with gaps."""
         if i == 0 and j == 0:
-            return [[""] * len(a), [""] * len(b)]
+            return [[""] * len(word_1), [""] * len(word_2)]
         elif d_dir[i, j] == "W":
-            (a2, b2) = self.align(a, b, d_dir, i, j - 1)
-            return [add(a2, gap(a)), add(b2, get(b, j - 1))]
+            (a2, b2) = self.align(word_1, word_2, d_dir, i, j - 1)
+            return [add(a2, gap(word_1)), add(b2, get(word_2, j - 1))]
         elif d_dir[i, j] == "N":
-            (a2, b2) = self.align(a, b, d_dir, i - 1, j)
-            return [add(a2, get(a, i - 1)), add(b2, gap(b))]
+            (a2, b2) = self.align(word_1, word_2, d_dir, i - 1, j)
+            return [add(a2, get(word_1, i - 1)), add(b2, gap(word_2))]
         elif d_dir[i, j] == "NW":
-            (a2, b2) = self.align(a, b, d_dir, i - 1, j - 1)
-            return [add(a2, get(a, i - 1)), add(b2, get(b, j - 1))]
+            (a2, b2) = self.align(word_1, word_2, d_dir, i - 1, j - 1)
+            return [add(a2, get(word_1, i - 1)), add(b2, get(word_2, j - 1))]
 
-    def lev(self, a, b):
+    def lev(self, word_1, word_2):
         """Align the two alignments a and b and return the common alignment and its score."""
-        m = len(a[0])
-        n = len(b[0])
-        d = dict()
+        word_1_length = len(word_1[0])
+        word_2_length = len(word_2[0])
+        values_dic = dict()
         d_dir = dict()
-        d[(0, 0)] = 0
+        values_dic[(0, 0)] = 0
         d_dir[(0, 0)] = ""
-        for i in range(1, m + 1):
-            d[(i, 0)] = i * len(a) * len(b)
+        for i in range(1, word_1_length + 1):
+            values_dic[(i, 0)] = i * len(word_1) * len(word_2) + int(i * len(word_2) * (len(word_2) - 1) / 2)
             d_dir[(i, 0)] = "N"
-        for j in range(1, n + 1):
-            d[(0, j)] = j * len(a) * len(b)
+        for j in range(1, word_2_length + 1):
+            values_dic[(0, j)] = j * len(word_1) * len(word_2) + int(j * len(word_1) * (len(word_1) - 1) / 2)
             d_dir[(0, j)] = "W"
-        for i in range(1, m + 1):
-            for j in range(1, n + 1):
-                (d[(i, j)], d_dir[(i, j)]) = min_dir(
-                    d[(i - 1, j)] + sum_of_pairs(get(a, i - 1), gap(b)),
-                    d[(i, j - 1)] + sum_of_pairs(gap(a), get(b, j - 1)),
-                    d[(i - 1, j - 1)] + sum_of_pairs(get(a, i - 1), get(b, j - 1)))
-        if self.verbose == 3:
-            print_matrix(a, b, d, m, n)
-        (a1, a2) = self.align(a, b, d_dir, m, n)
+        for i in range(1, word_1_length + 1):
+            for j in range(1, word_2_length + 1):
+                (values_dic[(i, j)], d_dir[(i, j)]) = min_dir(
+                    values_dic[(i - 1, j)] + sum_of_pairs(get(word_1, i - 1), gap(word_2)) + int(len(word_2) * (len(word_2) - 1) / 2),
+                    values_dic[(i, j - 1)] + sum_of_pairs(gap(word_1), get(word_2, j - 1)) + int(len(word_1) * (len(word_1) - 1) / 2),
+                    values_dic[(i - 1, j - 1)] + sum_of_pairs(get(word_1, i - 1), get(word_2, j - 1))
+                )
+        if self.verbose == 2:
+            print_matrix(word_1, word_2, values_dic)
+        (a1, a2) = self.align(word_1, word_2, d_dir, word_1_length, word_2_length)
         a1.extend(a2)
-        return d, a1
+        return (a1, values_dic[(word_1_length, word_2_length)])
 
     def msa(self):
         """Progressive multiply alignment of the sequences in a.
 
         Successively, the sequences in a are added to an alignment.
         The final alignment and the sum of the scores are returned."""
-        b = [self.words[0]]
-        d = dict()
-        c = []
+        word_1 = [self.words[0]]
         total = 0
-        old_len = 0
         for i in range(1, len(self.words)):
-            c = [self.words[i]]
-            (d, b) = self.lev(b, c)
-            score = d[(len(b[0]), len(c[0]))]
+            word_2 = [self.words[i]]
+            (word_1, score) = self.lev(word_1, word_2)
             total += score
-            # increase the total score if previous alignment was shorter and gaps were inserted
-            if i != 1 and old_len < len(b[1]):
-                total += (len(b) - 1) * (len(b) - 2) / 2
-            old_len = len(b[1])
-
-        if self.verbose == 2:
-            print_matrix(b, c, d, len(b[0]), len(c[0]))
 
         if len(self.words) > 2:
             print("\nAlignment:")
-            for mm in b:
+            for mm in word_1:
                 print(mm)
 
-        return total, b
+        return total, word_1
 
 
 def calc_distance(words, verbose=0):

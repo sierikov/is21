@@ -19,6 +19,7 @@ Options:
   --help  Show this message and exit.
 
 Commands:
+  arg   Checks if given arguments contains rebuts, attacks or defeats
   dice  Calculates Dice coefficient for given WORDs
   hmm   Creates Markov model for given data
   lev   Calculates Levenshtein distance between first and second WORDs

@@ -69,7 +69,7 @@ def hmm(file, transitions, emissions, data, sentence, start, end):
 @click.option('--all/--some', '-a', default=False, type=bool, help='Show all types that can be found')
 def arg(file, data, rebut, attack, defeat, undercut, s_attack, s_undercut, all):
 
-    """Creates Markov model for given data"""
+    """Checks if given arguments contains rebuts, attacks or defeats"""
     art.print_arg()
     calc_arg(file, data, rebut, attack, defeat, undercut, s_attack, s_undercut, all)
 
